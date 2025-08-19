@@ -9,9 +9,10 @@ interface User{
 }
 
 let allSockets: User[] =[];  
-
+let count=0;
 wss.on("connection",(socket)=>{
-
+    count++;
+    broadcastCount(); 
     socket.on("message",(message)=>{
         //"{"type":"join" ..}"  in websockets here always comes a string first need to change this string object
 
@@ -47,6 +48,17 @@ wss.on("connection",(socket)=>{
             }
         }
     })
-    
+     socket.on("close", () => {
+    count--;
+    console.log("User disconnected, count =", count);
+    broadcastCount(); // ✅ broadcast when someone leaves
+    allSockets = allSockets.filter((u) => u.socket !== socket);
+  });
 });
-
+function broadcastCount() {
+  wss.clients.forEach((client) => {
+    if (client.readyState === 1) {
+      client.send(JSON.stringify({ type: "userCount", count }));
+    }
+  });
+}
