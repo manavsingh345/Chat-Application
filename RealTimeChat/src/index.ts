@@ -1,11 +1,11 @@
 import { WebSocketServer,WebSocket } from "ws";
-
-const wss= new WebSocketServer({port:8000});
+const PORT: number = Number(process.env.PORT) || 8000;  
+const wss = new WebSocketServer({ port: PORT });
 
 interface User{
     socket:WebSocket;
-    room:String;
-    userId: String;
+    room:string;
+    userId: string;
 }
 
 let allSockets: User[] =[];  
@@ -17,7 +17,7 @@ wss.on("connection",(socket)=>{
         //"{"type":"join" ..}"  in websockets here always comes a string first need to change this string object
 
         //@ts-ignore
-        const parsedMessage = JSON.parse(message);   //convert string into object
+        const parsedMessage = JSON.parse(message.toString());   //convert string into object
         if(parsedMessage.type==="join"){
             allSockets.push({
                 socket,
