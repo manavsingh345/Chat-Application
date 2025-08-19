@@ -7,7 +7,8 @@ export function Dashboard(){
     const { roomId } = useParams();
     const location = useLocation();
     const username = (location.state as { username?: string })?.username || "Anonymous";
-    
+    const [count ,setCount]=useState<number>(0);
+
     const inputRef=useRef<HTMLInputElement>(null);
     const wsRef=useRef<WebSocket | null>(null);
     type ChatMsg = { senderId: string; message: string };
@@ -34,7 +35,10 @@ export function Dashboard(){
           } else if (data.senderId && data.message) {
             // already flat object
             setMessages((m) => [...m, data]);
-          } else {
+          } else if(data.type==="userCount"){
+            setCount(data.count);
+          }
+          else {
             setMessages((m) => [...m, String(event.data)]);
           }
         } catch {
@@ -56,7 +60,8 @@ export function Dashboard(){
           
         {<ChatLogo/>}
         <p className="text-2xl pl-2 text-white  font-medium font-serif">Real Time Chat</p>
-        <p className="text-white pl-10 absolute text-2xl font-serif top-2 right-2 pr-2">{roomId}</p>
+        <p className="text-white pl-10 absolute text-1.5xl font-serif top-2 right-2 pr-2">RoomId: {roomId}</p>
+        <p className="text-white pl-10 absolute text-1.5xl font-serif top-2 right-2 pr-2 pt-8">User: {count}</p>
         </div>
         <p className="text-white pl-4 pt-1 font-serif">temporary room that expires after all users exit</p>
      <div className='h-[65vh] mt-4 mb-6 ml-2 mr-2 border-2 border-gray-700 flex flex-col overflow-y-auto'>
