@@ -15,7 +15,8 @@ export function Dashboard(){
     const [messages, setMessages] = useState<(string | ChatMsg)[]>(["Welcome!"]);
 
       useEffect(() => {
-      const ws = new WebSocket("wss://chat-backend-me34.onrender.com");
+       const wsUrl = import.meta.env.VITE_WS_URL; // ✅ comes from .env
+      const ws = new WebSocket(wsUrl);
       ws.onopen = () => {
         ws.send(JSON.stringify({
           type: "join",

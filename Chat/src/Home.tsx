@@ -30,7 +30,8 @@ export function Home(){
     }
   }
   useEffect(()=>{
-    const ws=new WebSocket("wss://chat-backend-me34.onrender.com");
+     const wsUrl = import.meta.env.VITE_WS_URL; // ✅ comes from .env
+     const ws = new WebSocket(wsUrl);
     wsRef.current=ws;
     
     return () => {
