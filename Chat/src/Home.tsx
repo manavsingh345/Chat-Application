@@ -30,7 +30,7 @@ export function Home(){
     }
   }
   useEffect(()=>{
-    const ws=new WebSocket("ws://localhost:8000");
+    const ws=new WebSocket("wss://chat-backend-me34.onrender.com");
     wsRef.current=ws;
     
     return () => {
