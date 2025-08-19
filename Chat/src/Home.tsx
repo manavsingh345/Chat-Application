@@ -14,7 +14,7 @@ export function Home(){
   const navigate = useNavigate();
   const [roomId, setRoomId] = useState<string | null>(null);
   const [username, setUsername] = useState("");  
-
+  
   const handleClick = () =>{
     const randomId = Math.floor(100000 + Math.random() * 900000).toString();
     setRoomId(randomId);
@@ -32,7 +32,7 @@ export function Home(){
   useEffect(()=>{
     const ws=new WebSocket("ws://localhost:8000");
     wsRef.current=ws;
-
+    
     return () => {
       ws.close();
     };
